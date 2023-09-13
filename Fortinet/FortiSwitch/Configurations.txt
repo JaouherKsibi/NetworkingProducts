@@ -1,0 +1,93 @@
+############################Switch access #################################
+we can access the switch via the console port (CLI) or via the GUI using the management port.
+
+
+
+the default serial connection settings are:
+port:com4
+baud rate:115200
+data bits:8
+parity:none 
+stop bits:1
+flow control:XON/XOFF			none 
+serial break length:100 ms 
+
+
+-for the management port : the default IP address of this intergface is 192.168.1.99/24 
+we can change it using the cli or GUI 
+
+-the default username and password are:
+login:admin
+with no password 
+
+
+-The fortiswitch CLI commands are the same fortigate's commands 
+
+
+##################################configuring the management port and management requirements 
+
+config system interface
+	edit mgmt
+		set mode static
+		set ip 10.105.142.19 255.255.255.0
+		set allowaccess ping https http ssh snmp telnet
+		set type physical
+	next
+	edit internal
+		set type physical
+	end
+end
+
+
+
+config router static
+	edit 1
+		set device mgmt
+		set gateway 192.168.0.10
+		set status enable
+	end
+
+
+
+
+###################""""creating VLAN 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################affecting an interface as an access interface 
+config switch interface
+	edit port1
+		set native-vlan 4000
+	edit port2
+		set native-vlan 2
+	end
+
+
+
+
+1024-E 
+vlan mgnt 
+les vlans
+
+
+
+
+
+

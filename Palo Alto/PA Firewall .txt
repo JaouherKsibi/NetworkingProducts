@@ -1,0 +1,25 @@
+*default login and pasword* 
+	login:admin
+	password:admin
+*PA cli*
+	console
+	ssh
+*PAN OS Modes*
+	operation mode (>)
+		 ^
+		|| configure 
+		 v
+	configuration mode (#)
+*CLI tools*
+	? OR TAB	ONLINE HELP 
+*Pipeline*
+	match Or except 
+*find*
+	>#find command keyword "interface"
+
+*set up management ip address*
+	à partir de la version 8. Panorama a commencé à utiliser le client dhcp avant l'@ par defaut 192.168.1.1
+	#set deviceconfig system type static
+	#set deviceconfig system ip-address 172.17.1.200 netmask 255.255.255.0 default-gateway 172.17.1.254 dns-setting servers primary 8.8.8.8
+*commit* pour appliquer les configurations 
+	#commit

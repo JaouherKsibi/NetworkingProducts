@@ -1,0 +1,24 @@
+###to make the changes take effect:
+cfgenable
+
+###to save the config to the non-volatil memory:
+cfgsave 
+
+
+###to show the ports wwn
+switchshow
+
+
+### to Add a member to a zone alias.
+
+aliadd "aliName","member[; member...]"
+"aliName":Specify the name of a zone alias
+"member":Specify a member or list of members to be added to the alias,
+.A switch domain and port index pair. Use switchShow for a list of valid port
+index numbers.
+• A world wide name (WWN).
+
+switch:admin> aliadd "array1", "1,2"
+switch:admin> aliadd "array2", "21:00:00:20:37:0c:72:51"
+
+
