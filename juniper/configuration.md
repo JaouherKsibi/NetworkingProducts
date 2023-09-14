@@ -7,7 +7,7 @@ Console access to the device is enabled by default. Use a console port to connec
 ### console port
 
 9600 bit rate, 8 serial data bit, no serial parity, serial stop bit 1, no flow control.
-
+|  |    |
 | :---------------: |:---------------:|
 | speed  |   9600 bit rate |
 | Data bits  | 8            | 
