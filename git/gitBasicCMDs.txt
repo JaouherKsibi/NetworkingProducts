@@ -1,0 +1,14 @@
+
+
+ git version
+
+
+
+
+git status
+git add .
+
+
+git commit -m "first commit"
+
+git push --set-upstream https://github.com/JaouherKsibi/NetworkingProducts.git master
