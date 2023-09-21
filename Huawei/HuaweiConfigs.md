@@ -72,3 +72,115 @@ On utilise les cables RJ-45 cross through pour connecter les ports de type diffÃ
 ### Les fibres 
 la fibre utilise 2 voies une TX et l'autre RX 
 le cablage doit Ãªtre fait de telle sorte que Tx soit en face de RX et vice versa 
+
+
+
+
+## Establishing Tunnels
+### GRE Tunnels
+
+#### For Router1
+```
+
+ //Configure a public network outbound interface.
+[R1]interface GigabitEthernet1/0/0
+[R1-G1/0/0]ip address 3.1.1.1 255.255.255.0
+
+//Configure a tunnel interface and set the source and destination addresses to the IP addresses of interfaces that send and receive packets.
+
+[R1]interface Tunnel0/0/1
+[R1-Tunnel0/0/1]ip address 10.4.1.1 255.255.255.0
+[R1-Tunnel0/0/1]tunnel-protocol gre
+[R1-Tunnel0/0/1]source 3.1.1.1
+[R1-Tunnel0/0/1]destination 1.1.1.1
+```
+#### For Router2
+
+```
+
+[R2]interface GigabitEthernet1/0/0   //Configure a public network outbound interface.
+[R2-G1/0/0]ip address 1.1.1.1 255.255.255.0
+
+
+[R2]interface Tunnel0/0/1   //Configure a tunnel interface and set the source and destination addresses to the IP addresses of interfaces that send and receive packets.
+[R2-Tunnel0/0/1]ip address 10.4.1.2 255.255.255.0
+[R2-Tunnel0/0/1]tunnel-protocol gre
+[R2-Tunnel0/0/1]source 1.1.1.1
+[R2-Tunnel0/0/1]destination 3.1.1.1
+
+```
+
+
+
+### IPSec Tunnels
+
+
+#### Manual Configuration with no DPD (Dead Peer Detection)
+##### For R1
+```
+////////////////Router 1/////////////////
+acl number 3101
+rule 5 permit ip source 10.1.1.0 0.0.0.255 destination 10.1.2.0 0.0.0.255
+
+
+
+ipsec proposal tran1  //Configure an IPSec proposal.
+ esp authentication-algorithm sha2-256
+ esp encryption-algorithm aes-128 
+
+ipsec policy map1 10 manual  //Manually create an IPSec policy.
+ security acl 3101
+ proposal tran1
+ tunnel local 1.1.1.1
+ tunnel remote 2.1.1.1
+ sa spi inbound esp 54321
+ sa string-key inbound esp cipher %^%#JvZxR2g8c;a9~FPN~n'$7`DEV&=G(=Et02P/%\*!%^%#  //Configure authentication key for the inbound SA to huawei.
+ sa spi outbound esp 12345
+ sa string-key outbound esp cipher %^%#K{JG:rWVHPMnf;5\|,GW(Luq'qi8BT4nOj%5W5=)%^%#  //Configure authentication key for the outbound SA to huawei.
+
+
+
+interface GigabitEthernet1/0/0
+ ip address 1.1.1.1 255.255.255.0
+ ipsec policy map1
+
+
+
+ip route-static 10.1.2.0 255.255.255.0 1.1.1.2
+
+```
+
+
+
+#####For R2
+
+```
+acl number 3101
+rule 5 permit ip source 10.1.2.0 0.0.0.255 destination 10.1.1.0 0.0.0.255
+
+
+ipsec proposal tran1  //Configure an IPSec proposal.
+ esp authentication-algorithm sha2-256
+ esp encryption-algorithm aes-128 
+
+
+
+ipsec policy map1 10 manual  //Manually create an IPSec policy.
+ security acl 3101
+ proposal tran1
+ tunnel local 2.1.1.1 
+ tunnel remote 1.1.1.1
+ sa spi inbound esp 54321
+ sa string-key inbound esp cipher %^%#JvZxR2g8c;a9~FPN~n'$7`DEV&=G(=Et02P/%\*!%^%#  //Configure authentication key for the inbound SA to huawei.
+ sa spi outbound esp 12345
+ sa string-key outbound esp cipher %^%#K{JG:rWVHPMnf;5\|,GW(Luq'qi8BT4nOj%5W5=)%^%#  //Configure authentication key for the outbound SA to huawei.
+
+
+
+
+interface GigabitEthernet1/0/0
+ ip address 2.1.1.1 255.255.255.0
+ ipsec policy map1
+
+```
+

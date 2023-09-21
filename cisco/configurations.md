@@ -198,3 +198,15 @@ hostname(config-ctx)# description text
 ```
 hostname(config-ctx)# allocate-interface physical_interface [map_name] [visible | invisible]
 ```
+
+
+
+
+## NAT 
+
+### Static NAT 
+
+
+```
+hostname(config)# static (inside,outside) tcp 209.165.201.3 ftp 10.1.2.27 ftp netmask 255.255.255.255
+```
